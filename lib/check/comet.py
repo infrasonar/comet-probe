@@ -24,7 +24,7 @@ for idx in range(1, 13):
 
 
 QUERIES = (
-    MIB_INDEX['RFC1213-MIB']['system'],
+    MIB_INDEX['P8641-MIB']['global'],
 
     MIB_INDEX['P8641-MIB']['channel1'],
     MIB_INDEX['P8641-MIB']['channel2'],
