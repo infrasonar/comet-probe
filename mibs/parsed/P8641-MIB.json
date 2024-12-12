@@ -1,0 +1,745 @@
+{
+  "IMPORTS": [
+    [
+      "RFC1155-SMI",
+      [
+        "enterprises"
+      ]
+    ],
+    [
+      "RFC-1212",
+      [
+        "OBJECT-TYPE"
+      ]
+    ],
+    [
+      "RFC-1215",
+      [
+        "TRAP-TYPE"
+      ]
+    ]
+  ],
+  "DisplayString": {
+    "tp": "OCTET STRING"
+  },
+  "comet": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "enterprises",
+      22626
+    ]
+  },
+  "products": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "comet",
+      1
+    ]
+  },
+  "p8641": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "products",
+      5
+    ]
+  },
+  "global": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "p8641",
+      1
+    ]
+  },
+  "channels": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "p8641",
+      2
+    ]
+  },
+  "channel1": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "channels",
+      1
+    ]
+  },
+  "channel2": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "channels",
+      2
+    ]
+  },
+  "channel3": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "channels",
+      3
+    ]
+  },
+  "channel4": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "channels",
+      4
+    ]
+  },
+  "traps": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "p8641",
+      3
+    ]
+  },
+  "tables": {
+    "tp": "OBJECT IDENTIFIER",
+    "value": [
+      "p8641",
+      4
+    ]
+  },
+  "sensorName": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "global",
+      1
+    ]
+  },
+  "serialNumber": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "global",
+      2
+    ]
+  },
+  "deviceType": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "global",
+      3
+    ]
+  },
+  "ch1Name": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      1
+    ]
+  },
+  "ch1Val": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      2
+    ]
+  },
+  "ch1IntVal": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      3
+    ]
+  },
+  "ch1Alarm": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      4
+    ]
+  },
+  "ch1LimHi": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      5
+    ]
+  },
+  "ch1LimLo": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      6
+    ]
+  },
+  "ch1LimHyst": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      7
+    ]
+  },
+  "ch1LimDelay": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      8
+    ]
+  },
+  "ch1Unit": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      9
+    ]
+  },
+  "ch1AlarmStr": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      10
+    ]
+  },
+  "ch1Min": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      11
+    ]
+  },
+  "ch1Max": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel1",
+      12
+    ]
+  },
+  "ch2Name": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      1
+    ]
+  },
+  "ch2Val": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      2
+    ]
+  },
+  "ch2IntVal": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      3
+    ]
+  },
+  "ch2Alarm": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      4
+    ]
+  },
+  "ch2LimHi": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      5
+    ]
+  },
+  "ch2LimLo": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      6
+    ]
+  },
+  "ch2LimHyst": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      7
+    ]
+  },
+  "ch2LimDelay": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      8
+    ]
+  },
+  "ch2Unit": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      9
+    ]
+  },
+  "ch2AlarmStr": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      10
+    ]
+  },
+  "ch2Min": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      11
+    ]
+  },
+  "ch2Max": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel2",
+      12
+    ]
+  },
+  "ch3Name": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      1
+    ]
+  },
+  "ch3Val": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      2
+    ]
+  },
+  "ch3IntVal": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      3
+    ]
+  },
+  "ch3Alarm": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      4
+    ]
+  },
+  "ch3LimHi": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      5
+    ]
+  },
+  "ch3LimLo": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      6
+    ]
+  },
+  "ch3LimHyst": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      7
+    ]
+  },
+  "ch3LimDelay": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      8
+    ]
+  },
+  "ch3Unit": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      9
+    ]
+  },
+  "ch3AlarmStr": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      10
+    ]
+  },
+  "ch3Min": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      11
+    ]
+  },
+  "ch3Max": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel3",
+      12
+    ]
+  },
+  "ch4Name": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      1
+    ]
+  },
+  "ch4Val": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      2
+    ]
+  },
+  "ch4IntVal": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      3
+    ]
+  },
+  "ch4Alarm": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      4
+    ]
+  },
+  "ch4LimHi": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      5
+    ]
+  },
+  "ch4LimLo": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      6
+    ]
+  },
+  "ch4LimHyst": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      7
+    ]
+  },
+  "ch4LimDelay": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      8
+    ]
+  },
+  "ch4Unit": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      9
+    ]
+  },
+  "ch4AlarmStr": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      10
+    ]
+  },
+  "ch4Min": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      11
+    ]
+  },
+  "ch4Max": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "channel4",
+      12
+    ]
+  },
+  "messageString": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "DisplayString"
+    },
+    "index": null,
+    "value": [
+      "traps",
+      1
+    ]
+  },
+  "historyTable": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "SEQUENCE OF HistoryEntry"
+    },
+    "index": null,
+    "value": [
+      "tables",
+      1
+    ]
+  },
+  "historyEntry": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "HistoryEntry"
+    },
+    "index": [
+      "ch1value"
+    ],
+    "value": [
+      "historyTable",
+      1
+    ]
+  },
+  "HistoryEntry": {
+    "tp": "SEQUENCE"
+  },
+  "ch1value": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "historyEntry",
+      1
+    ]
+  },
+  "ch2value": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "historyEntry",
+      2
+    ]
+  },
+  "ch3value": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "historyEntry",
+      3
+    ]
+  },
+  "ch4value": {
+    "tp": "OBJECT-TYPE",
+    "syntax": {
+      "tp": "INTEGER"
+    },
+    "index": null,
+    "value": [
+      "historyEntry",
+      4
+    ]
+  }
+}
