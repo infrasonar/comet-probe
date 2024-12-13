@@ -24,6 +24,13 @@ for idx in range(1, 13):
         MIB_INDEX[(*channels_oid, ch_idx, idx)] = obj
 
 
+CHANNEL_ALARM_LU = {
+    0: 'No alarm',
+    1: 'Alarm High',
+    2: 'Alarm Low',
+}
+
+
 QUERIES = (
     MIB_INDEX['P8641-MIB']['global'],
 
@@ -54,6 +61,7 @@ async def check_comet(
     channel = [{
         'name': k,
         **v[0],
+        'chAlarm': CHANNEL_ALARM_LU.get(v[0]['chAlarm']),
         'chVal': to_float(v[0]['chVal']),
         'chMin': to_float(v[0]['chMin']),
         'chMax': to_float(v[0]['chMax']),
