@@ -3,6 +3,7 @@ from libprobe.asset import Asset
 from libprobe.exceptions import CheckException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
+from ..utils import to_float
 
 channels_oid = (1, 3, 6, 1, 4, 1, 22626, 1, 5, 2)
 
@@ -53,6 +54,9 @@ async def check_comet(
     channel = [{
         'name': k,
         **v[0],
+        'chVal': to_float(v[0]['chVal']),
+        'chMin': to_float(v[0]['chMin']),
+        'chMax': to_float(v[0]['chMax']),
     }
         for k, v in state.items()
         if len(v)
