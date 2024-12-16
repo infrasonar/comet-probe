@@ -11,6 +11,6 @@ def to_float(inp: str, unit: str, multiplier: float=1.0) -> Optional[float]:
     unit_func = UNIT_LU.get(unit, lambda a: a)
     try:
         value = unit_func(float(inp) * multiplier)
-        return UNIT_LU[unit](value)
+        return unit_func(value)
     except Exception:
         return
