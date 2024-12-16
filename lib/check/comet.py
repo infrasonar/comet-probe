@@ -42,6 +42,23 @@ QUERIES = (
 )
 
 
+def on_channel(item: dict) -> dict:
+    unit = item['chUnit']
+    return {
+        'name': item['chName'],  # str
+        'chVal': to_float(item['chVal'], unit),
+        'chAlarm': CHANNEL_ALARM_LU.get(item['chAlarm']),
+        'chLimHi': to_float(item['chLimHi'], unit, 0.1),
+        'chLimLo': to_float(item['chLimLo'], unit, 0.1),
+        'chLimHyst': to_float(item['chLimHyst'], unit, 0.1),
+        'chLimDelay': item['chLimDelay'],  # int
+        'chUnit': item['chUnit'],  # str
+        'chAlarmStr': item['chAlarmStr'],  # str
+        'chMin': to_float(item['chMin'], unit),
+        'chMax': to_float(item['chMax'], unit),
+    }
+
+
 async def check_comet(
         asset: Asset,
         asset_config: dict,
@@ -58,17 +75,7 @@ async def check_comet(
         if not len(v):
             raise CheckException(f'No metrics for channel `{k}`')
 
-    channel = [{
-        'name': k,
-        **v[0],
-        'chAlarm': CHANNEL_ALARM_LU.get(v[0]['chAlarm']),
-        'chVal': to_float(v[0]['chVal']),
-        'chMin': to_float(v[0]['chMin']),
-        'chMax': to_float(v[0]['chMax']),
-    }
-        for k, v in state.items()
-        if len(v)
-    ]
+    channel = [on_channel(v) for v in state.values()]
 
     return {
         'global': globl,
