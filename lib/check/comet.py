@@ -46,16 +46,15 @@ def on_channel(item: dict) -> dict:
     unit = item['chUnit']
     return {
         'name': item['chName'],  # str
-        'chVal': to_float(item['chVal'], unit),
-        'chAlarm': CHANNEL_ALARM_LU.get(item['chAlarm']),
-        'chLimHi': to_float(item['chLimHi'], unit, 0.1),
-        'chLimLo': to_float(item['chLimLo'], unit, 0.1),
-        'chLimHyst': to_float(item['chLimHyst'], unit, 0.1),
-        'chLimDelay': item['chLimDelay'],  # int
-        'chUnit': item['chUnit'],  # str
-        'chAlarmStr': item['chAlarmStr'],  # str
-        'chMin': to_float(item['chMin'], unit),
-        'chMax': to_float(item['chMax'], unit),
+        'val': to_float(item['chVal'], unit),
+        'alarm': CHANNEL_ALARM_LU.get(item['chAlarm']),
+        'limHi': to_float(item['chLimHi'], unit, 0.1),
+        'limLo': to_float(item['chLimLo'], unit, 0.1),
+        'limHyst': to_float(item['chLimHyst'], unit, 0.1),
+        'limDelay': item['chLimDelay'],  # int
+        'alarmStr': item['chAlarmStr'],  # str
+        'min': to_float(item['chMin'], unit),
+        'max': to_float(item['chMax'], unit),
     }
 
 
@@ -75,9 +74,18 @@ async def check_comet(
         if not len(v):
             raise CheckException(f'No metrics for channel `{k}`')
 
-    channel = [on_channel(v) for v in state.values()]
+    temperature = [
+        on_channel(v)
+        for v in state.values()
+        if v['chUnit'] in ('°C', '°F')]
+    humidity = [
+        on_channel(v)
+        for v in state.values()
+        if v['chUnit'] == '%RH'
+    ]
 
     return {
         'global': globl,
-        'channel': channel,
+        'temperature': temperature,
+        'humidity': humidity,
     }
