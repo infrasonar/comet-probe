@@ -1,7 +1,7 @@
 [![CI](https://github.com/infrasonar/comet-probe/workflows/CI/badge.svg)](https://github.com/infrasonar/comet-probe/actions)
 [![Release Version](https://img.shields.io/github/release/infrasonar/comet-probe)](https://github.com/infrasonar/comet-probe/releases)
 
-# InfraSonar APC UPS Probe
+# InfraSonar Comet Probe
 
 Documentation: https://docs.infrasonar.com/collectors/probes/comet/
 
