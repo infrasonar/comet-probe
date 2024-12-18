@@ -1,16 +1,26 @@
 from asyncsnmplib.mib.mib_index import MIB_INDEX
+from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
 from libprobe.exceptions import CheckException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
 from ..utils import to_float
 
+
+# the mib is wrong
+# according to DisplayString TEXTUAL-CONVENTION the charset is limited
+# so we use a custom syntax fun:
+SYNTAX_FUNS['decode'] = lambda a: a.decode()
+MIB_INDEX[MIB_INDEX['P8641-MIB']['ch1Unit']]['syntax'] = {
+    'tp': 'CUSTOM', 'func': 'decode',
+}
+
 channels_oid = (1, 3, 6, 1, 4, 1, 22626, 1, 5, 2)
 
 # get channel1
 channel1 = MIB_INDEX[(*channels_oid, 1)]
 
-# use that as channel5 which is not present in mib
+# use that as channel5 which is not present in mib (the mib is wrong again!)
 MIB_INDEX[(*channels_oid, 5)] = channel1
 MIB_INDEX['P8641-MIB']['channel5'] = (*channels_oid, 5)
 
