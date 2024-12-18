@@ -27,7 +27,7 @@ docker build -t comet-probe . --no-cache
 
 ## Config
 
-Example configuration: _(the example below is the default when no config is given)_
+Example configuration:
 
 ```yaml
 snmp:
