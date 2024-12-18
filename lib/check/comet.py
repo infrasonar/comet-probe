@@ -20,7 +20,6 @@ QUERIES = (
     MIB_INDEX['P8641-MIB']['channel2'],
     MIB_INDEX['P8641-MIB']['channel3'],
     MIB_INDEX['P8641-MIB']['channel4'],
-    MIB_INDEX['P8641-MIB']['channel5'],
 )
 
 
@@ -54,7 +53,7 @@ async def check_comet(
     temperature = []
     humidity = []
 
-    for cid in range(1, 6):
+    for cid in range(1, 5):
         channel = state.pop(f'channel{cid}', None)
         if channel:
             # single item
