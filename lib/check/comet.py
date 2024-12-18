@@ -1,7 +1,7 @@
 from asyncsnmplib.mib.mib_index import MIB_INDEX
 from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
-from libprobe.exceptions import CheckException, IncompleteResultException
+from libprobe.exceptions import IncompleteResultException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
 from ..utils import to_float
