@@ -22,7 +22,7 @@ QUERIES = (
 def on_channel(item: dict) -> dict:
     unit = item['ch1Unit']
     return {
-        'name': item['chName'],  # str
+        'name': item['ch1Name'],  # str
         'val': to_float(item['ch1Val'], unit),
         'alarm': CHANNEL_ALARM_LU.get(item['ch1Alarm']),
         'limHi': to_float(item['ch1LimHi'], unit, 0.1),
