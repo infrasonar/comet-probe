@@ -1,7 +1,7 @@
 from asyncsnmplib.mib.mib_index import MIB_INDEX
 from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
-from libprobe.exceptions import CheckException
+from libprobe.exceptions import CheckException, IncompleteResultException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
 from ..utils import to_float
@@ -87,11 +87,22 @@ async def check_comet(
         on_channel(i)
         for v in state.values()
         for i in v
-        if i['chUnit'] == '%RH'
-    ]
+        if i['chUnit'] == '%RH']
+    unknown = [
+        i['chUnit']
+        for v in state.values()
+        for i in v
+        if i['chUnit'] not in ('°C', '°F', '%RH')]
 
-    return {
+    state = {
         'global': globl,
         'temperature': temperature,
         'humidity': humidity,
     }
+
+    if unknown:
+        raise IncompleteResultException(
+            f'Unknown Units: {unknown}',
+            result=state)
+
+    return state
