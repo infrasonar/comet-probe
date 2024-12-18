@@ -102,7 +102,7 @@ async def check_comet(
 
     if unknown:
         raise IncompleteResultException(
-            f'Unknown Units: {unknown}',
+            f'Unknown sensor units: {unknown}',
             result=state)
 
     return state
