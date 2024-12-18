@@ -83,7 +83,7 @@ async def check_comet(
         i['chUnit']
         for v in state.values()
         for i in v
-        if i['chUnit'] not in ('C', 'F', '%RH')]
+        if i['chUnit'] not in (None, '', 'C', 'F', '%RH')]
 
     state = {
         'global': globl,
