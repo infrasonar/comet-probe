@@ -1,11 +1,43 @@
 import logging
 from asyncsnmplib.mib.mib_index import MIB_INDEX
+from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
 from libprobe.exceptions import IncompleteResultException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
 from ..utils import to_float
 
+
+def decode_display_string(inp: bytes):
+    try:
+        return inp.decode()
+    except UnicodeDecodeError:
+        try:
+            return inp.decode('latin-1')
+        except Exception:
+            return
+
+
+# add function to syntax function lookup
+SYNTAX_FUNS['DisplayString_latin1'] = decode_display_string
+
+# patch the mib index to use that syntax function
+MIB_INDEX[MIB_INDEX['P8641-MIB']['ch1Unit']]['syntax'] = {
+    'tp': 'CUSTOM', 'func': 'DisplayString_latin1',
+}
+MIB_INDEX[MIB_INDEX['P8641-MIB']['ch2Unit']]['syntax'] = {
+    'tp': 'CUSTOM', 'func': 'DisplayString_latin1',
+}
+MIB_INDEX[MIB_INDEX['P8641-MIB']['ch3Unit']]['syntax'] = {
+    'tp': 'CUSTOM', 'func': 'DisplayString_latin1',
+}
+MIB_INDEX[MIB_INDEX['P8641-MIB']['ch4Unit']]['syntax'] = {
+    'tp': 'CUSTOM', 'func': 'DisplayString_latin1',
+}
+
+# TODO
+# OR patch all DisplayString syntax funs
+# SYNTAX_FUNS['DisplayString'] = decode_display_string
 
 CHANNEL_ALARM_LU = {
     0: 'No alarm',
@@ -60,7 +92,7 @@ async def check_comet(
             item = channel[0]
             unit = item[f'ch{cid}Unit']
 
-            if unit in ('C', 'F'):
+            if unit in ('°C', '°F'):
                 temperature.append(on_channel(item, cid))
             elif unit == '%RH':
                 humidity.append(on_channel(item, cid))
