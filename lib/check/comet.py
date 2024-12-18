@@ -6,25 +6,6 @@ from ..snmpquery import snmpquery
 from ..utils import to_float
 
 
-channels_oid = (1, 3, 6, 1, 4, 1, 22626, 1, 5, 2)
-
-# get channel1
-channel1 = MIB_INDEX[(*channels_oid, 1)]
-
-# use that as channel5 which is not present in mib (the mib is wrong again!)
-MIB_INDEX[(*channels_oid, 5)] = channel1
-MIB_INDEX['P8641-MIB']['channel5'] = (*channels_oid, 5)
-
-for idx in range(1, 13):
-    # get obj for each metric (1-12)
-    obj = MIB_INDEX[(*channels_oid, 1, idx)]
-    # remove channel_id from the metric name
-    obj['name'] = obj['name'][:2] + obj['name'][3:]
-    for ch_idx in range(2, 6):
-        # use that object for the other channels (2-5)
-        MIB_INDEX[(*channels_oid, ch_idx, idx)] = obj
-
-
 CHANNEL_ALARM_LU = {
     0: 'No alarm',
     1: 'Alarm High',
@@ -34,28 +15,23 @@ CHANNEL_ALARM_LU = {
 
 QUERIES = (
     MIB_INDEX['P8641-MIB']['global'],
-
     MIB_INDEX['P8641-MIB']['channel1'],
-    MIB_INDEX['P8641-MIB']['channel2'],
-    MIB_INDEX['P8641-MIB']['channel3'],
-    MIB_INDEX['P8641-MIB']['channel4'],
-    MIB_INDEX['P8641-MIB']['channel5'],
 )
 
 
 def on_channel(item: dict) -> dict:
-    unit = item['chUnit']
+    unit = item['ch1Unit']
     return {
         'name': item['chName'],  # str
-        'val': to_float(item['chVal'], unit),
-        'alarm': CHANNEL_ALARM_LU.get(item['chAlarm']),
-        'limHi': to_float(item['chLimHi'], unit, 0.1),
-        'limLo': to_float(item['chLimLo'], unit, 0.1),
-        'limHyst': to_float(item['chLimHyst'], unit, 0.1),
-        'limDelay': item['chLimDelay'],  # int
-        'alarmStr': item['chAlarmStr'],  # str
-        'min': to_float(item['chMin'], unit),
-        'max': to_float(item['chMax'], unit),
+        'val': to_float(item['ch1Val'], unit),
+        'alarm': CHANNEL_ALARM_LU.get(item['ch1Alarm']),
+        'limHi': to_float(item['ch1LimHi'], unit, 0.1),
+        'limLo': to_float(item['ch1LimLo'], unit, 0.1),
+        'limHyst': to_float(item['ch1LimHyst'], unit, 0.1),
+        'limDelay': item['ch1LimDelay'],  # int
+        'alarmStr': item['ch1AlarmStr'],  # str
+        'min': to_float(item['ch1Min'], unit),
+        'max': to_float(item['ch1Max'], unit),
     }
 
 
@@ -69,21 +45,22 @@ async def check_comet(
 
     globl = state.pop('global', [])
 
-    temperature = [
-        on_channel(i)
-        for v in state.values()
-        for i in v
-        if i['chUnit'] in ('C', 'F')]
-    humidity = [
-        on_channel(i)
-        for v in state.values()
-        for i in v
-        if i['chUnit'] == '%RH']
-    unknown = [
-        i['chUnit']
-        for v in state.values()
-        for i in v
-        if i['chUnit'] not in (None, '', 'C', 'F', '%RH')]
+    unknown = None
+    temperature = []
+    humidity = []
+
+    channel1 = state.pop('channel1', [])
+    if channel1:
+        # single item
+        item = state['channel1'][0]
+        unit = item['ch1Unit']
+
+        if unit in ('C', 'F'):
+            temperature.append(on_channel(item))
+        elif unit == '%RH':
+            humidity.append(on_channel(item))
+        elif unit not in ('', None):
+            unknown = unit
 
     state = {
         'global': globl,
@@ -93,7 +70,7 @@ async def check_comet(
 
     if unknown:
         raise IncompleteResultException(
-            f'Unknown sensor units: {unknown}',
+            f'Unknown sensor unit: {unknown}',
             result=state)
 
     return state
