@@ -8,6 +8,7 @@ def idenitity(inp: float) -> float:
 def convert_fahrenheit_to_celsius(inp: float) -> float:
     return (inp - 32) * 5 / 9
 
+
 UNIT_LU = {
     '°C': idenitity,
     '°F': convert_fahrenheit_to_celsius,
@@ -16,6 +17,9 @@ UNIT_LU = {
 
 
 def to_float(inp: str, unit: str, multiplier: float = 1.0) -> Optional[float]:
+    """Converts to Celcius if the input is Fahrenheit. Humidity or Celcius will
+    be only be converted to float. (units: °C, °F or %RH)
+    """
     unit_func = UNIT_LU.get(unit, lambda a: a)
     try:
         value = float(inp) * multiplier

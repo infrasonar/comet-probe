@@ -1,7 +1,7 @@
 [![CI](https://github.com/infrasonar/comet-probe/workflows/CI/badge.svg)](https://github.com/infrasonar/comet-probe/actions)
 [![Release Version](https://img.shields.io/github/release/infrasonar/comet-probe)](https://github.com/infrasonar/comet-probe/releases)
 
-# InfraSonar APC UPS Probe
+# InfraSonar Comet Probe
 
 Documentation: https://docs.infrasonar.com/collectors/probes/comet/
 
@@ -23,6 +23,18 @@ Variable            | Default                        | Description
 
 ```
 docker build -t comet-probe . --no-cache
+```
+
+## Config
+
+Example configuration: _(the example below is the default when no config is given)_
+
+```yaml
+snmp:
+  config:
+    version: "1"
+    community:
+      secret: public
 ```
 
 ## Dry run
