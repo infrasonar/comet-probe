@@ -75,13 +75,15 @@ async def check_comet(
             raise CheckException(f'No metrics for channel `{k}`')
 
     temperature = [
-        on_channel(v)
+        on_channel(i)
         for v in state.values()
-        if v['chUnit'] in ('°C', '°F')]
+        for i in v
+        if i['chUnit'] in ('°C', '°F')]
     humidity = [
-        on_channel(v)
+        on_channel(i)
         for v in state.values()
-        if v['chUnit'] == '%RH'
+        for i in v
+        if i['chUnit'] == '%RH'
     ]
 
     return {
