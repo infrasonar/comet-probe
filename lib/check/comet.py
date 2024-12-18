@@ -1,3 +1,4 @@
+import logging
 from asyncsnmplib.mib.mib_index import MIB_INDEX
 from libprobe.asset import Asset
 from libprobe.exceptions import IncompleteResultException
@@ -57,7 +58,7 @@ async def check_comet(
         channel = state.pop(f'channel{cid}', [])
         if channel:
             # single item
-            item = state[f'channel{cid}'][0]
+            item = channel[0]
             unit = item[f'ch{cid}Unit']
 
             if unit in ('C', 'F'):
@@ -66,6 +67,9 @@ async def check_comet(
                 humidity.append(on_channel(item, cid))
             elif unit not in ('', None):
                 unknown = unit
+            else:
+                name = item[f'ch{cid}Name']
+                logging.debug(f'No unit for item: {name}')
 
     state = {
         'global': globl,
