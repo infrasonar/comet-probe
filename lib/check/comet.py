@@ -1,19 +1,10 @@
 from asyncsnmplib.mib.mib_index import MIB_INDEX
-from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
 from libprobe.exceptions import IncompleteResultException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
 from ..utils import to_float
 
-
-# the mib is wrong
-# according to DisplayString TEXTUAL-CONVENTION the charset is limited
-# so we use a custom syntax fun:
-SYNTAX_FUNS['decode'] = lambda a: a.decode()
-MIB_INDEX[MIB_INDEX['P8641-MIB']['ch1Unit']]['syntax'] = {
-    'tp': 'CUSTOM', 'func': 'decode',
-}
 
 channels_oid = (1, 3, 6, 1, 4, 1, 22626, 1, 5, 2)
 
@@ -82,7 +73,7 @@ async def check_comet(
         on_channel(i)
         for v in state.values()
         for i in v
-        if i['chUnit'] in ('°C', '°F')]
+        if i['chUnit'] in ('C', 'F')]
     humidity = [
         on_channel(i)
         for v in state.values()
@@ -92,7 +83,7 @@ async def check_comet(
         i['chUnit']
         for v in state.values()
         for i in v
-        if i['chUnit'] not in ('°C', '°F', '%RH')]
+        if i['chUnit'] not in ('C', 'F', '%RH')]
 
     state = {
         'global': globl,
