@@ -55,7 +55,7 @@ async def check_comet(
     humidity = []
 
     for cid in range(1, 6):
-        channel = state.pop(f'channel{cid}', [])
+        channel = state.pop(f'channel{cid}', None)
         if channel:
             # single item
             item = channel[0]
@@ -70,6 +70,8 @@ async def check_comet(
             else:
                 name = item[f'ch{cid}Name']
                 logging.debug(f'No unit for item: {name}')
+        else:
+            logging.debug(f'Channel {cid} missing or empty in state: {state}')
 
     state = {
         'global': globl,
