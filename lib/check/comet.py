@@ -78,12 +78,6 @@ async def check_comet(
 
     globl = state.pop('global', [])
 
-    # TODO not sure if this ever occurs
-    # we could also use IncompleteResultException
-    for k, v in state.items():
-        if not len(v):
-            raise CheckException(f'No metrics for channel `{k}`')
-
     temperature = [
         on_channel(i)
         for v in state.values()
