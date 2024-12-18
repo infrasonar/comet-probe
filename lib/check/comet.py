@@ -16,22 +16,26 @@ CHANNEL_ALARM_LU = {
 QUERIES = (
     MIB_INDEX['P8641-MIB']['global'],
     MIB_INDEX['P8641-MIB']['channel1'],
+    MIB_INDEX['P8641-MIB']['channel2'],
+    MIB_INDEX['P8641-MIB']['channel3'],
+    MIB_INDEX['P8641-MIB']['channel4'],
+    MIB_INDEX['P8641-MIB']['channel5'],
 )
 
 
-def on_channel(item: dict) -> dict:
-    unit = item['ch1Unit']
+def on_channel(item: dict, cid: int) -> dict:
+    unit = item[f'ch{cid}Unit']
     return {
-        'name': item['chName'],  # str
-        'val': to_float(item['ch1Val'], unit),
-        'alarm': CHANNEL_ALARM_LU.get(item['ch1Alarm']),
-        'limHi': to_float(item['ch1LimHi'], unit, 0.1),
-        'limLo': to_float(item['ch1LimLo'], unit, 0.1),
-        'limHyst': to_float(item['ch1LimHyst'], unit, 0.1),
-        'limDelay': item['ch1LimDelay'],  # int
-        'alarmStr': item['ch1AlarmStr'],  # str
-        'min': to_float(item['ch1Min'], unit),
-        'max': to_float(item['ch1Max'], unit),
+        'name': item[f'ch{cid}Name'],  # str
+        'val': to_float(item[f'ch{cid}Val'], unit),
+        'alarm': CHANNEL_ALARM_LU.get(item[f'ch{cid}Alarm']),
+        'limHi': to_float(item[f'ch{cid}LimHi'], unit, 0.1),
+        'limLo': to_float(item[f'ch{cid}LimLo'], unit, 0.1),
+        'limHyst': to_float(item[f'ch{cid}LimHyst'], unit, 0.1),
+        'limDelay': item[f'ch{cid}LimDelay'],  # int
+        'alarmStr': item[f'ch{cid}AlarmStr'],  # str
+        'min': to_float(item[f'ch{cid}Min'], unit),
+        'max': to_float(item[f'ch{cid}Max'], unit),
     }
 
 
@@ -49,18 +53,19 @@ async def check_comet(
     temperature = []
     humidity = []
 
-    channel1 = state.pop('channel1', [])
-    if channel1:
-        # single item
-        item = state['channel1'][0]
-        unit = item['ch1Unit']
+    for cid in range(1, 6):
+        channel = state.pop(f'channel{cid}', [])
+        if channel:
+            # single item
+            item = state[f'channel{cid}'][0]
+            unit = item[f'ch{cid}Unit']
 
-        if unit in ('C', 'F'):
-            temperature.append(on_channel(item))
-        elif unit == '%RH':
-            humidity.append(on_channel(item))
-        elif unit not in ('', None):
-            unknown = unit
+            if unit in ('C', 'F'):
+                temperature.append(on_channel(item, cid))
+            elif unit == '%RH':
+                humidity.append(on_channel(item, cid))
+            elif unit not in ('', None):
+                unknown = unit
 
     state = {
         'global': globl,
