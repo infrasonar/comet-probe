@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-def idenitity(inp: float) -> float:
+def identity(inp: float) -> float:
     return inp
 
 
@@ -10,9 +10,9 @@ def convert_fahrenheit_to_celsius(inp: float) -> float:
 
 
 UNIT_LU = {
-    '°C': idenitity,
-    '°F': convert_fahrenheit_to_celsius,
-    '%RH': idenitity,
+    '℃': identity,
+    '℉': convert_fahrenheit_to_celsius,
+    '%RH': identity,
 }
 
 

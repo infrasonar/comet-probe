@@ -9,6 +9,7 @@ from ..utils import to_float
 
 
 def decode_display_string(inp: bytes):
+    logging.debug(f'decode unit: {[nr for nr in inp]}')
     try:
         return inp.decode('utf-8')
     except UnicodeDecodeError:
@@ -89,7 +90,7 @@ async def check_comet(
             item = channel[0]
             unit = item[f'ch{cid}Unit']
 
-            if unit in ('°C', '°F'):
+            if unit in ('℃', '℉'):
                 temperature.append(on_channel(item, cid))
             elif unit == '%RH':
                 humidity.append(on_channel(item, cid))
