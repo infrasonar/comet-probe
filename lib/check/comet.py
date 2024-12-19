@@ -10,12 +10,9 @@ from ..utils import to_float
 
 def decode_display_string(inp: bytes):
     try:
-        return inp.decode()
+        return inp.decode('utf-8')
     except UnicodeDecodeError:
-        try:
-            return inp.decode('latin-1')
-        except Exception:
-            return
+        return inp.decode('latin-1')
 
 
 # add function to syntax function lookup
