@@ -33,10 +33,6 @@ MIB_INDEX[MIB_INDEX['P8641-MIB']['ch4Unit']]['syntax'] = {
     'tp': 'CUSTOM', 'func': 'DisplayString_latin1',
 }
 
-# TODO
-# OR patch all DisplayString syntax funs
-# SYNTAX_FUNS['DisplayString'] = decode_display_string
-
 CHANNEL_ALARM_LU = {
     0: 'No alarm',
     1: 'Alarm High',
@@ -90,7 +86,7 @@ async def check_comet(
             item = channel[0]
             unit = item[f'ch{cid}Unit']
 
-            if unit in ('℃', '℉'):
+            if unit in ('℃', '°C', '℉', '°F'):
                 temperature.append(on_channel(item, cid))
             elif unit == '%RH':
                 humidity.append(on_channel(item, cid))

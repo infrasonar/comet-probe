@@ -10,8 +10,10 @@ def convert_fahrenheit_to_celsius(inp: float) -> float:
 
 
 UNIT_LU = {
+    '°C': identity,
     '℃': identity,
     '℉': convert_fahrenheit_to_celsius,
+    '°F': convert_fahrenheit_to_celsius,
     '%RH': identity,
 }
 
