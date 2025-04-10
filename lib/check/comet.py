@@ -41,11 +41,11 @@ CHANNEL_ALARM_LU = {
 
 
 QUERIES = (
-    MIB_INDEX['P8641-MIB']['global'],
-    MIB_INDEX['P8641-MIB']['channel1'],
-    MIB_INDEX['P8641-MIB']['channel2'],
-    MIB_INDEX['P8641-MIB']['channel3'],
-    MIB_INDEX['P8641-MIB']['channel4'],
+    (MIB_INDEX['P8641-MIB']['global'], False),
+    (MIB_INDEX['P8641-MIB']['channel1'], False),
+    (MIB_INDEX['P8641-MIB']['channel2'], False),
+    (MIB_INDEX['P8641-MIB']['channel3'], False),
+    (MIB_INDEX['P8641-MIB']['channel4'], False),
 )
 
 

@@ -54,7 +54,7 @@ def get_snmp_client(
                     raise SnmpInvalidConfig('`priv.type` invalid')
                 elif not isinstance(priv_passwd, str):
                     raise SnmpInvalidConfig('`priv.password` must be string')
-                priv = (priv, priv_passwd)
+                priv = (priv_proto, priv_passwd)
             cl = SnmpV3(
                 host=address,
                 username=username,

@@ -8,7 +8,7 @@ from typing import Union, Tuple, Dict, List, Any
 
 async def snmpquery(
     client: Union[Snmp, SnmpV1, SnmpV3],
-    oids: Tuple[Tuple[int], ...],
+    queries: Tuple[Tuple[Tuple[int], bool], ...],
     strip_metric_prefix: bool = False,
 ) -> Dict[str, List[Dict[str, Any]]]:
     '''Snmpwalk operation on the given oids
@@ -16,8 +16,9 @@ async def snmpquery(
     Args:
         client:
             Snmp client
-        oids:
-            Tuple of oids to query
+        queries:
+            Tuple of Tuple with oid and is_table to query.
+            Example: (((1.3.6.1.2.1.1), False),)
         strip_metric_prefix (bool, optional):
             Strip metric prefixes i.e. ipAddressOrigin -> Origin
             Defaults to False
@@ -36,8 +37,8 @@ async def snmpquery(
         raise
     else:
         results = {}
-        for oid in oids:
-            result = await client.walk(oid)
+        for oid, is_table in queries:
+            result = await client.walk(oid, is_table)
             try:
                 name, result = _on_result(oid, result)
             except Exception as e:
