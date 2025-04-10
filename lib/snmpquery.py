@@ -8,7 +8,7 @@ from typing import Union, Tuple, Dict, List, Any
 
 async def snmpquery(
     client: Union[Snmp, SnmpV1, SnmpV3],
-    queries: Tuple[Tuple[Tuple[int], bool], ...],
+    queries: Tuple[Tuple[Tuple[int, ...], bool], ...],
     strip_metric_prefix: bool = False,
 ) -> Dict[str, List[Dict[str, Any]]]:
     '''Snmpwalk operation on the given oids
