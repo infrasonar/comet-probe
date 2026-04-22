@@ -2,9 +2,9 @@ import logging
 from asyncsnmplib.client import Snmp, SnmpV1, SnmpV3
 from asyncsnmplib.v3.auth import AUTH_PROTO
 from asyncsnmplib.v3.encr import PRIV_PROTO
+from asyncsnmplib.v3.cache import SnmpV3Cache
 from libprobe.asset import Asset
 from libprobe.exceptions import CheckException
-from typing import Union
 from . import DOCS_URL
 
 
@@ -12,22 +12,32 @@ class SnmpInvalidConfig(Exception):
     pass
 
 
+V3_CACHE = {}
+
+
 def get_snmp_client(
         asset: Asset,
         local_config: dict,
-        config: dict) -> Union[Snmp, SnmpV1, SnmpV3]:
+        config: dict) -> Snmp | SnmpV1 | SnmpV3:
     address = config.get('address')
     if not address:
         address = asset.name
 
     version = local_config.get('version', '2c')
 
-    if config.get('_interval', 60) <= 120:
+    interval = config.get('_interval', 60)
+    if interval <= 120:
         # for 2 minute or smaller intervals
         timeouts = (20, 10, 10)
-    else:
-        # increased timeouts for larger intervals
+    elif interval <= 240:
+        # default for 3 and 4 minute intervals
         timeouts = (30, 20, 20)
+    elif interval <= 540:
+        # default for all between 5 and 10 minute intervals
+        timeouts = (50, 50, 30, 30)
+    else:
+        # increased timeouts for 10 minute or larger intervals
+        timeouts = (60, 60, 40, 40, 40)
 
     try:
         if version == '2c':
@@ -63,11 +73,18 @@ def get_snmp_client(
                 elif not isinstance(priv_passwd, str):
                     raise SnmpInvalidConfig('`priv.password` must be string')
                 priv = (priv_proto, priv_passwd)
+
+            key = (asset.id, address, username, auth, priv)
+            cache = V3_CACHE.get(key)
+            if cache is None:
+                V3_CACHE[key] = cache = SnmpV3Cache(username, auth, priv)
+
             cl = SnmpV3(
                 host=address,
                 username=username,
                 auth=auth,
                 priv=priv,
+                cache=cache,
                 timeouts=timeouts,
             )
         elif version == '1':
