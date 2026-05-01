@@ -2,6 +2,7 @@ import logging
 from asyncsnmplib.mib.mib_index import MIB_INDEX
 from asyncsnmplib.mib.syntax_funs import SYNTAX_FUNS
 from libprobe.asset import Asset
+from libprobe.check import Check
 from libprobe.exceptions import IncompleteResultException
 from ..snmpclient import get_snmp_client
 from ..snmpquery import snmpquery
@@ -65,48 +66,51 @@ def on_channel(item: dict, cid: int) -> dict:
     }
 
 
-async def check_comet(
-        asset: Asset,
-        asset_config: dict,
-        check_config: dict) -> dict:
+class CheckComet(Check):
+    key = 'comet'
+    unchanged_eol = 0
 
-    snmp = get_snmp_client(asset, asset_config, check_config)
-    state = await snmpquery(snmp, QUERIES)
+    @staticmethod
+    async def run(asset: Asset, local_config: dict, config: dict) -> dict:
 
-    globl = state.pop('global', [])
+        snmp = get_snmp_client(asset, local_config, config)
+        state = await snmpquery(snmp, QUERIES)
 
-    unknown = None
-    temperature = []
-    humidity = []
+        globl = state.pop('global', [])
 
-    for cid in range(1, 5):
-        channel = state.pop(f'channel{cid}', None)
-        if channel:
-            # single item
-            item = channel[0]
-            unit = item[f'ch{cid}Unit']
+        unknown = None
+        temperature = []
+        humidity = []
 
-            if unit in ('℃', '°C', '℉', '°F'):
-                temperature.append(on_channel(item, cid))
-            elif unit == '%RH':
-                humidity.append(on_channel(item, cid))
-            elif unit not in ('', None):
-                unknown = unit
+        for cid in range(1, 5):
+            channel = state.pop(f'channel{cid}', None)
+            if channel:
+                # single item
+                item = channel[0]
+                unit = item[f'ch{cid}Unit']
+
+                if unit in ('℃', '°C', '℉', '°F'):
+                    temperature.append(on_channel(item, cid))
+                elif unit == '%RH':
+                    humidity.append(on_channel(item, cid))
+                elif unit not in ('', None):
+                    unknown = unit
+                else:
+                    name = item[f'ch{cid}Name']
+                    logging.debug(f'No unit for item: {name}')
             else:
-                name = item[f'ch{cid}Name']
-                logging.debug(f'No unit for item: {name}')
-        else:
-            logging.debug(f'Channel {cid} missing or empty in state: {state}')
+                logging.debug(
+                    f'Channel {cid} missing or empty in state: {state}')
 
-    state = {
-        'global': globl,
-        'temperature': temperature,
-        'humidity': humidity,
-    }
+        state = {
+            'global': globl,
+            'temperature': temperature,
+            'humidity': humidity,
+        }
 
-    if unknown:
-        raise IncompleteResultException(
-            f'Unknown sensor unit: {unknown}',
-            result=state)
+        if unknown:
+            raise IncompleteResultException(
+                f'Unknown sensor unit: {unknown}',
+                result=state)
 
-    return state
+        return state

@@ -1,16 +1,18 @@
+import asyncio
 import logging
 from asyncsnmplib.client import Snmp, SnmpV1, SnmpV3
-from asyncsnmplib.exceptions import SnmpNoAuthParams, SnmpNoConnection
+from asyncsnmplib.exceptions import (
+    SnmpNoAuthParams, SnmpNoConnection, SnmpAuthV3Exception)
 from asyncsnmplib.mib.utils import on_result, on_result_base
 from libprobe.exceptions import CheckException
-from typing import Union, Tuple, Dict, List, Any
+from typing import Any
 
 
-async def snmpquery(
-    client: Union[Snmp, SnmpV1, SnmpV3],
-    queries: Tuple[Tuple[Tuple[int, ...], bool], ...],
+async def _snmpquery(
+    client: Snmp | SnmpV1 | SnmpV3,
+    queries: tuple[tuple[tuple[int, ...], bool], ...],
     strip_metric_prefix: bool = False,
-) -> Dict[str, List[Dict[str, Any]]]:
+) -> dict[str, list[dict[str, Any]]]:
     '''Snmpwalk operation on the given oids
 
     Args:
@@ -51,3 +53,18 @@ async def snmpquery(
     finally:
         # safe to close whatever the connection status is
         client.close()
+
+
+async def snmpquery(
+    client: Snmp | SnmpV1 | SnmpV3,
+    queries: tuple[tuple[tuple[int, ...], bool], ...],
+    strip_metric_prefix: bool = False,
+) -> dict[str, list[dict[str, Any]]]:
+    try:
+        res = await _snmpquery(client, queries, strip_metric_prefix)
+    except SnmpAuthV3Exception:
+        await asyncio.sleep(1.0)
+        # Retry...
+        res = await _snmpquery(client, queries, strip_metric_prefix)
+
+    return res

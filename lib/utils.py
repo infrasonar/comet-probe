@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 def identity(inp: float) -> float:
     return inp
 
@@ -18,7 +15,7 @@ UNIT_LU = {
 }
 
 
-def to_float(inp: str, unit: str, multiplier: float = 1.0) -> Optional[float]:
+def to_float(inp: str, unit: str, multiplier: float = 1.0) -> float | None:
     """Converts to Celcius if the input is Fahrenheit. Humidity or Celcius will
     be only be converted to float. (units: C, F or %RH)
     """
